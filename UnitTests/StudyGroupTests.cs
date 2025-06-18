@@ -13,7 +13,7 @@
             var name = "Advanced Math Group";
             var subject = Subject.Math;
             var createDate = DateTime.Now;
-            var users = new List<User> { new User { Id = 1, Name = "Oleksii" } };
+            var users = new List<User> { new() { Id = 1, Name = "Oleksii" } };
 
             // Act
             var studyGroup = new StudyGroup(studyGroupId, name, subject, createDate, users);

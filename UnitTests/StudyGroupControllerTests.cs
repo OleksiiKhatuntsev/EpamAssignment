@@ -93,6 +93,13 @@ namespace TestApp.Tests
             result.Should().BeOfType<OkResult>();
             _repositoryMock.Verify(r => r.LeaveStudyGroup(groupId, userId), Times.Once);
         }
+        
+        [Test]
+        public void Constructor_WithNullRepository_ThrowsArgumentNullException()
+        {
+            Action act = () => new StudyGroupController(null);
+            act.Should().Throw<ArgumentNullException>();
+        }
 
         private static StudyGroup CreateValidStudyGroupWithUser(int groupId = 1, string groupName = "TestGroup",
             Subject subject = Subject.Math, int userId = 1, string userName = "John Doe") =>
