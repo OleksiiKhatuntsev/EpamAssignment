@@ -1,0 +1,6 @@
+@TestAssignmentEpam_HostAddress = http://localhost:5298
+
+GET {{TestAssignmentEpam_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
