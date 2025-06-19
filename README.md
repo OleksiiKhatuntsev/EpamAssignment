@@ -1,3 +1,45 @@
+# Table of content
+# 🧪 TestAssignmentEpam
+---
+
+## 📘 Table of Contents
+
+1. [🔧 Project Structure Description](#structure-description)  
+2. [🌿 Branches](#branches)  
+   - [master](#master)  
+   - [test-fix-branch](#test-fix-branch)  
+3. [📁 Folder Structure](#folder-structure)  
+   - [Tests](#tests)  
+   - [TestInfrastructure](#testinfrastructure)  
+   - [Integration](#integration)  
+   - [Constants](#constants)  
+   - [ComponentTests](#componenttests)  
+   - [UnitTests](#unittests)  
+   - [Domain](#domain)  
+     - [Abstract](#abstract)  
+     - [Entities](#entities)  
+     - [Enums](#enums)  
+     - [Exceptions](#exceptions)  
+   - [TestAssignmentEpam](#testassignmentepam)  
+4. [✅ Criteria Testing](#criteria-testing)  
+   - [❓ Missing Critical Details](#missing-critical-details)  
+     - [User](#user)  
+     - [Student Group](#student-group)  
+     - [Error Handling](#error-handling)  
+     - [User Experience](#user-experience)  
+5. [🧪 Unit Tests](#unit-tests)  
+   - [Test Class: StudyGroupTests](#test-class-studygrouptests)  
+   - [Test Class: StudyGroupController](#test-class-studygroupcontroller)  
+6. [🧩 Component Tests](#component-tests)  
+   - [Test Class: StudyGroupControllerTests](#test-class-studygroupcontrollertests)  
+7. [🔁 End-to-End (E2E) Tests](#end-to-end-e2e-tests)  
+   - [E2E Test 1: Full Study Group Lifecycle](#e2e-test-1-full-study-group-lifecycle)  
+   - [E2E Test 2: Prevent Duplicate Subject Membership](#e2e-test-2-prevent-duplicate-subject-membership)  
+   - [E2E Test 3: Multiple Users, Different Subjects](#e2e-test-3-multiple-users-different-subjects)  
+   - [E2E Test 4: Group Creation Validation](#e2e-test-4-group-creation-validation)
+
+---
+
 # Structure description
 ## Branches
 ### master
