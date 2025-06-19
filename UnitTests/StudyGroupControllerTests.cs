@@ -17,9 +17,7 @@ public class StudyGroupControllerTests
         _repositoryMock = new Mock<IStudyGroupRepository>();
         _controller = new StudyGroupController(_repositoryMock.Object);
     }
-
-    #region Happy Path Tests (Your existing tests are good for these)
-
+    
     [Test]
     public async Task CreateStudyGroup_WithValidStudyGroup_ReturnsOkResult()
     {
@@ -51,103 +49,82 @@ public class StudyGroupControllerTests
         okResult.Value.Should().BeEquivalentTo(groups);
     }
 
-    #endregion
-
-    #region Error Handling Tests (Missing from your implementation)
-
     [Test]
     public async Task CreateStudyGroup_WhenRepositoryThrowsException_PropagatesException()
     {
         // Arrange
+        var expectedExceptionMessage = "Duplicate subject";
         var studyGroup = CreateValidStudyGroupWithUser();
         _repositoryMock.Setup(r => r.CreateStudyGroup(It.IsAny<StudyGroup>()))
-            .ThrowsAsync(new InvalidOperationException("Duplicate subject"));
+            .ThrowsAsync(new InvalidOperationException(expectedExceptionMessage));
 
         // Act & Assert
         var act = async () => await _controller.CreateStudyGroup(studyGroup);
         await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("Duplicate subject");
+            .WithMessage(expectedExceptionMessage);
     }
 
     [Test]
     public async Task GetStudyGroups_WhenRepositoryThrowsException_PropagatesException()
     {
         // Arrange
+        var expectedExceptionMessage = "Database error";
         _repositoryMock.Setup(r => r.GetStudyGroups())
-            .ThrowsAsync(new InvalidOperationException("Database error"));
+            .ThrowsAsync(new InvalidOperationException(expectedExceptionMessage));
 
         // Act & Assert
         var act = async () => await _controller.GetStudyGroups();
         await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("Database error");
+            .WithMessage(expectedExceptionMessage);
     }
 
     [Test]
     public async Task JoinStudyGroup_WhenRepositoryThrowsNotFoundException_PropagatesException()
     {
         // Arrange
+        var expectedExceptionMessage = "Study group not found";
         int groupId = 1, userId = 42;
         _repositoryMock.Setup(r => r.JoinStudyGroup(groupId, userId))
-            .ThrowsAsync(new ArgumentException("Study group not found"));
+            .ThrowsAsync(new ArgumentException(expectedExceptionMessage));
 
         // Act & Assert
         var act = async () => await _controller.JoinStudyGroup(groupId, userId);
         await act.Should().ThrowAsync<ArgumentException>()
-            .WithMessage("Study group not found");
+            .WithMessage(expectedExceptionMessage);
     }
-
-    #endregion
-
-    #region Input Validation Tests (Would need controller enhancement)
 
     [Test]
     public async Task CreateStudyGroup_WithNullStudyGroup_ReturnsBadRequest()
     {
-        // This would require adding validation to the controller
-        // Currently your controller doesn't validate input
-
         // Act
         var result = await _controller.CreateStudyGroup(null);
 
-        // Assert - This would fail with current implementation
-        // result.Should().BeOfType<BadRequestResult>();
-
-        // For now, we test that it calls repository (which might handle null)
+        // Assert
+        result.Should().BeOfType<BadRequestResult>();
+        
         _repositoryMock.Verify(r => r.CreateStudyGroup(null), Times.Once);
     }
 
     [Test]
     public async Task JoinStudyGroup_WithInvalidIds_ShouldValidateInput()
     {
-        // This would require adding validation to the controller
-        // Currently your controller doesn't validate input
-
         // Act
         var result = await _controller.JoinStudyGroup(-1, -1);
 
-        // Assert - This would fail with current implementation
-        // result.Should().BeOfType<BadRequestResult>();
+        // Assert
+        result.Should().BeOfType<BadRequestResult>();
 
-        // For now, we test that it calls repository (which might handle invalid IDs)
         _repositoryMock.Verify(r => r.JoinStudyGroup(-1, -1), Times.Once);
     }
-
-    #endregion
-
-    #region Constructor Tests
-
+    
     [Test]
     public void Constructor_WithNullRepository_ThrowsArgumentNullException()
     {
         // Act & Assert
         var act = () => new StudyGroupController(null);
         act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("studyGroupRepository"); // Adjust parameter name as needed
+            .WithParameterName("studyGroupRepository");
     }
-
-    #endregion
-
-    #region Edge Cases
 
     [Test]
     public async Task SearchStudyGroups_WithEmptySubject_CallsRepositoryWithEmptyString()
@@ -179,10 +156,6 @@ public class StudyGroupControllerTests
         var groups = okResult.Value as List<StudyGroup>;
         groups.Should().BeEmpty();
     }
-
-    #endregion
-
-    // Helper method (your implementation is good)
     private static StudyGroup CreateValidStudyGroupWithUser(int groupId = 1, string groupName = "TestGroup",
         Subject subject = Subject.Math, int userId = 1, string userName = "John Doe") =>
         new(groupId, groupName, subject, DateTime.Now, [new User { Id = userId, Name = userName }]);
