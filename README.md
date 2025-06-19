@@ -1,3 +1,29 @@
+# Criteria Testing
+If it were a real product, before starting to test the solution, I gonna ask some questions about the **Acceptance Criteria**
+
+## Missing Critical Details
+
+#### User
+What is the limit for users in a group?
+Should the group disband when the last user leaves the group?
+Can users join multiple groups for different subjects?
+What happens when a user account is deleted?
+Should the user automatically join the group they create?
+
+#### Student Group
+Can we have different groups for the same subject? (unclear criteria, can be understood as "User can have only 1 group for each subject")
+Can we have the same group name in 1 subject? In different subjects? (Different subjects can help users to create groups with the same name for the same Stream)
+Can we delete a group that has at least 1 user?
+
+#### Error Handling
+
+What specific errors should users see?
+
+#### User Experience
+
+Where is the search functionality described?
+Can I look for a group with my friends? By its description?
+
 # Unit Tests
 ## Test Class
 StudyGroupTests
