@@ -1,3 +1,26 @@
+# Structure description
+## Branches
+### master
+I tried not to touch the original solution
+### test-fix-branch
+The original code was changed to make all tests pass
+
+## Folders structure
+* **Tests**: Contains test projects organized for different purposes.
+	+ **TestInfrastructure**: Supports testing infrastructure.
+		- **Integration**: Contains test-related files for future integration with external tools (e.g., TestRails).
+		- **Constants**: Constant values used in test cases.
+	+ **ComponentTests**: Contains component-level tests.
+	+ **UnitTests**: Contains unit-level tests.
+
+* **Domain**: Contains core domain logic and business rules.
+  	+ **Abstract**: Provides interfaces for Dependency Injection.
+	+ **Entities**: Contains DB entities and models.
+	+ **Enums**: Contains enums to specify some characteristics of the entity.
+ 	+ **Exceptions**: Contains custom exceptions.
+
+* **TestAssignmentEpam** Main project.
+
 # Criteria Testing
 If it were a real product, before starting to test the solution, I gonna ask some questions about the **Acceptance Criteria**
 
