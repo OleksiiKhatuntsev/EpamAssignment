@@ -1,5 +1,6 @@
 ﻿namespace TestApp.Tests;
 
+using Attributes;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -19,6 +20,7 @@ public class StudyGroupControllerTests
     }
     
     [Test]
+    [TestCaseForTestRail("008", TestCaseType.Unit)]
     public async Task CreateStudyGroup_WithValidStudyGroup_ReturnsOkResult()
     {
         // Arrange
@@ -33,6 +35,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("009", TestCaseType.Unit)]
     public async Task GetStudyGroups_WhenCalled_ReturnsOkObjectResultWithGroups()
     {
         // Arrange
@@ -50,6 +53,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("010", TestCaseType.Unit)]
     public async Task CreateStudyGroup_WhenRepositoryThrowsException_PropagatesException()
     {
         // Arrange
@@ -65,6 +69,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("011", TestCaseType.Unit)]
     public async Task GetStudyGroups_WhenRepositoryThrowsException_PropagatesException()
     {
         // Arrange
@@ -79,6 +84,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("012", TestCaseType.Unit)]
     public async Task JoinStudyGroup_WhenRepositoryThrowsNotFoundException_PropagatesException()
     {
         // Arrange
@@ -94,6 +100,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("013", TestCaseType.Unit)]
     public async Task CreateStudyGroup_WithNullStudyGroup_ReturnsBadRequest()
     {
         // Act
@@ -106,6 +113,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("014", TestCaseType.Unit)]
     public async Task JoinStudyGroup_WithInvalidIds_ShouldValidateInput()
     {
         // Act
@@ -118,6 +126,7 @@ public class StudyGroupControllerTests
     }
     
     [Test]
+    [TestCaseForTestRail("015", TestCaseType.Unit)]
     public void Constructor_WithNullRepository_ThrowsArgumentNullException()
     {
         // Act & Assert
@@ -127,6 +136,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("016", TestCaseType.Unit)]
     public async Task SearchStudyGroups_WithEmptySubject_CallsRepositoryWithEmptyString()
     {
         // Arrange
@@ -142,6 +152,7 @@ public class StudyGroupControllerTests
     }
 
     [Test]
+    [TestCaseForTestRail("017", TestCaseType.Unit)]
     public async Task GetStudyGroups_WhenNoGroupsExist_ReturnsEmptyList()
     {
         // Arrange
@@ -156,7 +167,18 @@ public class StudyGroupControllerTests
         var groups = okResult.Value as List<StudyGroup>;
         groups.Should().BeEmpty();
     }
-    private static StudyGroup CreateValidStudyGroupWithUser(int groupId = 1, string groupName = "TestGroup",
-        Subject subject = Subject.Math, int userId = 1, string userName = "John Doe") =>
-        new(groupId, groupName, subject, DateTime.Now, [new User { Id = userId, Name = userName }]);
+    
+    private static StudyGroup CreateValidStudyGroupWithUser(
+        int groupId = 1, 
+        string groupName = "TestGroup",
+        Subject subject = Subject.Math,
+        int userId = 1,
+        string userName = "John Doe") =>
+        new(
+                studyGroupId: groupId,
+                name: groupName,
+                subject: subject,
+                createDate: DateTime.Now,
+                users: [new User { Id = userId, Name = userName }]
+            );
 }
