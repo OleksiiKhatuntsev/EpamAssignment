@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using TestApp;
+using TestAppAPI;
 
-namespace TestAppAPI.ComponentTests
+namespace TestApp.Tests
 {
     [TestFixture]
     public class StudyGroupComponentTests
@@ -12,48 +12,97 @@ namespace TestAppAPI.ComponentTests
         private StudyGroupController _controller;
 
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
             _repositoryMock = new Mock<IStudyGroupRepository>();
             _controller = new StudyGroupController(_repositoryMock.Object);
         }
 
         [Test]
-        public async Task SearchStudyGroups_WithValidSubject_ReturnsMatchingGroups()
+        public async Task CreateStudyGroup_WithValidStudyGroup_CallRepositoryAndReturnOk()
         {
-            var subject = "Math";
-            var expected = new List<StudyGroup>
-            {
-                new StudyGroup(1, "Math Legends", Subject.Math, DateTime.UtcNow, [])
-            };
-            _repositoryMock.Setup(r => r.SearchStudyGroups(subject)).ReturnsAsync(expected);
+            // Arrange
+            var studyGroup = CreateValidStudyGroupWithUser();
 
-            var result = await _controller.SearchStudyGroups(subject);
+            // Act
+            var result = await _controller.CreateStudyGroup(studyGroup);
 
-            result.Should().BeOfType<OkObjectResult>();
-            var returned = (result as OkObjectResult)?.Value as List<StudyGroup>;
-            returned.Should().NotBeNull().And.HaveCount(1);
-            returned[0].Name.Should().Be("Math Legends");
+            // Assert
+            result.Should().BeOfType<OkResult>();
+            _repositoryMock.Verify(r => r.CreateStudyGroup(studyGroup), Times.Once);
         }
 
         [Test]
-        public async Task JoinStudyGroup_WhenUserAlreadyInOtherMathGroup_ShouldThrowInvalidOperationException()
+        public async Task GetStudyGroups_WithValidStudyGroups_ReturnListOfStudyGroups()
         {
-            var userId = 42;
-            var existingMathGroup = new StudyGroup(1, "Algebra Masters", Subject.Math, DateTime.UtcNow, new List<User>
-            {
-                new User { Id = 42, Name = "Mark" }
-            });
-            var newMathGroupId = 2;
+            // Arrange
+            var groups = new List<StudyGroup>
+                { CreateValidStudyGroupWithUser(), CreateValidStudyGroupWithUser(subject: Subject.Chemistry) };
+            _repositoryMock.Setup(r => r.GetStudyGroups()).ReturnsAsync(groups);
 
-            _repositoryMock.Setup(r => r.GetStudyGroups()).ReturnsAsync(new List<StudyGroup> { existingMathGroup });
-            _repositoryMock.Setup(r => r.JoinStudyGroup(newMathGroupId, userId))
-                .ThrowsAsync(new InvalidOperationException("User already in a Math group"));
+            // Act
+            var result = await _controller.GetStudyGroups();
 
-            Func<Task> act = async () => await _controller.JoinStudyGroup(newMathGroupId, userId);
-
-            await act.Should().ThrowAsync<InvalidOperationException>()
-                .WithMessage("User already in a Math group");
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var okResult = result as OkObjectResult;
+            okResult.Value.Should().BeEquivalentTo(groups);
         }
+
+        [Test]
+        public async Task SearchStudyGroups_WithValidGroups_ReturnMatchingGroups()
+        {
+            // Arrange
+            var subject = "Math";
+            var matchedGroups = new List<StudyGroup> { CreateValidStudyGroupWithUser() };
+            _repositoryMock.Setup(r => r.SearchStudyGroups(subject)).ReturnsAsync(matchedGroups);
+
+            // Act
+            var result = await _controller.SearchStudyGroups(subject);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var okResult = result as OkObjectResult;
+            okResult.Value.Should().BeEquivalentTo(matchedGroups);
+        }
+
+        [Test]
+        public async Task JoinStudyGroup_WithValidGroup_CallRepositoryAndReturnOk()
+        {
+            // Arrange
+            int groupId = 1, userId = 42;
+
+            // Act
+            var result = await _controller.JoinStudyGroup(groupId, userId);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+            _repositoryMock.Verify(r => r.JoinStudyGroup(groupId, userId), Times.Once);
+        }
+
+        [Test]
+        public async Task LeaveStudyGroup_WithValidGroupAndUser_CallRepositoryAndReturnOk()
+        {
+            // Arrange
+            int groupId = 1, userId = 42;
+
+            // Act
+            var result = await _controller.LeaveStudyGroup(groupId, userId);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+            _repositoryMock.Verify(r => r.LeaveStudyGroup(groupId, userId), Times.Once);
+        }
+        
+        [Test]
+        public void Constructor_WithNullRepository_ThrowsArgumentNullException()
+        {
+            Action act = () => new StudyGroupController(null);
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        private static StudyGroup CreateValidStudyGroupWithUser(int groupId = 1, string groupName = "TestGroup",
+            Subject subject = Subject.Math, int userId = 1, string userName = "John Doe") =>
+            new(groupId, groupName, subject, DateTime.Now, [new User { Id = userId, Name = userName }]);
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace TestApp.Tests
 {
     using FluentAssertions;
+    using TestAssignmentEpam;
 
     [TestFixture]
     public class StudyGroupTests
@@ -65,7 +66,7 @@
             Action act = () => new StudyGroup(1, name, subject, createDate, users);
 
             // Act & Assert
-            act.Should().Throw<Exception>();
+            act.Should().Throw<WrongStudyGroupException>();
         }
 
         [Test]
@@ -80,7 +81,7 @@
             Action act = () => new StudyGroup(1, name, subject, createDate, users);
 
             // Act & Assert
-            act.Should().Throw<Exception>();
+            act.Should().Throw<WrongStudyGroupException>();
         }
 
         [Test]
