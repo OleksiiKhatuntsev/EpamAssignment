@@ -109,11 +109,12 @@ public class StudyGroupControllerTests
         // Assert
         result.Should().BeOfType<BadRequestResult>();
         
-        _repositoryMock.Verify(r => r.CreateStudyGroup(null), Times.Once);
+        _repositoryMock.Verify(r => r.CreateStudyGroup(null), Times.Never);
     }
 
     [Test]
     [TestCaseForTestRail("014", TestCaseType.Unit)]
+    // Better here add 2 different tests for invalid userId and GroupId
     public async Task JoinStudyGroup_WithInvalidIds_ShouldValidateInput()
     {
         // Act
@@ -122,7 +123,7 @@ public class StudyGroupControllerTests
         // Assert
         result.Should().BeOfType<BadRequestResult>();
 
-        _repositoryMock.Verify(r => r.JoinStudyGroup(-1, -1), Times.Once);
+        _repositoryMock.Verify(r => r.JoinStudyGroup(-1, -1), Times.Never);
     }
     
     [Test]
