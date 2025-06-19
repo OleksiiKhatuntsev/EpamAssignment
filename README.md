@@ -1,3 +1,18 @@
+# Table of content
+# 🧪 TestAssignmentEpam
+---
+
+## 📘 Table of Contents
+
+1. [🔧 Project Structure Description](#structure-description)  
+2. [📁 Folder Structure](#folder-structure)  
+3. [✅ Criteria Testing](#criteria-testing)  
+4. [🧪 Unit Tests](#unit-tests)  
+5. [🧩 Component Tests](#component-tests)  
+6. [🔁 End-to-End (E2E) Tests](#end-to-end-e2e-tests)  
+
+---
+
 # Structure description
 ## Branches
 ### master
@@ -5,7 +20,7 @@ I tried not to touch the original solution
 ### test-fix-branch
 The original code was changed to make all tests pass
 
-## Folders structure
+## Folder structure
 * **Tests**: Contains test projects organized for different purposes.
 	+ **TestInfrastructure**: Supports testing infrastructure.
 		- **Integration**: Contains test-related files for future integration with external tools (e.g., TestRails).
