@@ -3,39 +3,38 @@
 StudyGroupTests
 
 ### Test Cases
-#### TC-U001: ValidStudyGroupNameLength_ShouldCreateSuccessfully
+#### TC-U001: Constructor_WithValidParameters_CreatesStudyGroup
 
 Validates that StudyGroup accepts names within the 5-30 character range
 
-#### TC-U002: InvalidStudyGroupName_TooShort_ShouldThrowException
+#### TC-U002: Constructor_WithMinimumValidNameLength_CreatesStudyGroup
 
-Ensures validation prevents creation of StudyGroups with names shorter than 5 characters
+Tests that a study group can be created with a name at the minimum allowed length (5 characters).
 
-#### TC-U003: InvalidStudyGroupName_TooLong_ShouldThrowException
+#### TC-U003: Constructor_WithMaximumValidNameLength_CreatesStudyGroup
 
-Ensures validation prevents creation of StudyGroups with names longer than 30 characters
+Tests that a study group can be created with a name at the maximum allowed length (30 characters).
 
-#### TC-U004: ValidSubjectAssignment_ShouldCreateSuccessfully
+#### TC-U004: Constructor_WithNameBelowMinimumLength_ThrowsException
 
-Validates that all allowed subjects (Math, Chemistry, Physics) can be assigned to StudyGroups
+Ensures that creating a study group with a name shorter than 5 characters throws a WrongStudyGroupException.
 
-#### TC-U005: AddUser_ShouldAddUserToList
+#### TC-U005: Constructor_WithNameAboveMaximumLength_ThrowsException
 
-Tests that the AddUser method correctly adds users to the StudyGroup
+Ensures that creating a study group with a name longer than 30 characters throws a WrongStudyGroupException.
 
-#### TC-U006: RemoveUser_ShouldRemoveUserFromList
+#### TC-U006: AddUser_WithValidUser_AddsUserToList
 
-Tests that the RemoveUser method correctly removes users from the StudyGroup
+Verifies that the AddUser method successfully adds a user to the study group's user collection.
 
-#### TC-U007: CreateDate_ShouldBeSetCorrectly
+#### TC-U007: RemoveUser_WithExistingUser_RemovesUserFromList
 
-Validates that the CreateDate property is properly set during StudyGroup creation
+Tests that the RemoveUser method successfully removes an existing user from the study group's user collection.
 
 ## Test Class
 StudyGroupController
 
 ### Test Cases
-
 #### TC-U008: CreateStudyGroup_WithValidStudyGroup_ReturnsOkResult
 
 Verifies that creating a study group with valid data returns an OK response and calls the repository once.
