@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
       <ProjectReference Include="..\Integration\Integration.csproj" />
       <ProjectReference Include="..\TestAssignmentEpam\TestAssignmentEpam.csproj" />
     </ItemGroup>
