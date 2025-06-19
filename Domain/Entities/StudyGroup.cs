@@ -31,10 +31,3 @@ public class StudyGroup
         Users.Remove(user);
     }
 }
-
-public enum Subject
-{
-    Math,
-    Chemistry,
-    Physics
-}
