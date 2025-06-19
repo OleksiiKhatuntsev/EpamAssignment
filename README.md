@@ -1,7 +1,115 @@
-## E2E Tests
+# Unit Tests
+## Test Class
+StudyGroupTests
 
-### ✅ E2E Test 1: Full Study Group Lifecycle for a Single Subject
-#### Title: User creates a study group, joins it, checks its listing, then leaves it.
+### Test Cases
+#### TC-U001: ValidStudyGroupNameLength_ShouldCreateSuccessfully
+
+Validates that StudyGroup accepts names within the 5-30 character range
+
+#### TC-U002: InvalidStudyGroupName_TooShort_ShouldThrowException
+
+Ensures validation prevents creation of StudyGroups with names shorter than 5 characters
+
+#### TC-U003: InvalidStudyGroupName_TooLong_ShouldThrowException
+
+Ensures validation prevents creation of StudyGroups with names longer than 30 characters
+
+#### TC-U004: ValidSubjectAssignment_ShouldCreateSuccessfully
+
+Validates that all allowed subjects (Math, Chemistry, Physics) can be assigned to StudyGroups
+
+#### TC-U005: AddUser_ShouldAddUserToList
+
+Tests that the AddUser method correctly adds users to the StudyGroup
+
+#### TC-U006: RemoveUser_ShouldRemoveUserFromList
+
+Tests that the RemoveUser method correctly removes users from the StudyGroup
+
+#### TC-U007: CreateDate_ShouldBeSetCorrectly
+
+Validates that the CreateDate property is properly set during StudyGroup creation
+
+## Test Class
+StudyGroupController
+
+### Test Cases
+
+#### TC-U008: CreateStudyGroup_WithValidStudyGroup_ReturnsOkResult
+
+Verifies that creating a study group with valid data returns an OK response and calls the repository once.
+
+#### TC-U009: GetStudyGroups_WhenCalled_ReturnsOkObjectResultWithGroups
+
+Tests that retrieving study groups returns an OK response with the expected list of groups from the repository.
+
+#### TC-U010: CreateStudyGroup_WhenRepositoryThrowsException_PropagatesException
+
+Ensures that exceptions thrown by the repository during study group creation are properly propagated to the caller.
+
+#### TC-U011: GetStudyGroups_WhenRepositoryThrowsException_PropagatesException
+
+Confirms that repository exceptions during group retrieval are correctly propagated without being swallowed.
+
+#### TC-U012: JoinStudyGroup_WhenRepositoryThrowsNotFoundException_PropagatesException
+
+Validates that exceptions from the repository when joining a non-existent study group are properly propagated.
+
+#### TC-U013: CreateStudyGroup_WithNullStudyGroup_ReturnsBadRequest
+
+Tests that attempt to create a study group with null input return a BadRequest response.
+
+#### TC-U014: JoinStudyGroup_WithInvalidIds_ShouldValidateInput
+
+Verifies that joining a study group with invalid negative IDs returns a BadRequest response.
+
+#### TC-U015: Constructor_WithNullRepository_ThrowsArgumentNullException
+
+Ensures the controller constructor throws an ArgumentNullException when passed a null repository dependency.
+
+#### TC-U016: SearchStudyGroups_WithEmptySubject_CallsRepositoryWithEmptyString
+
+Tests that searching with an empty subject string correctly pass the empty string to the repository.
+
+#### TC-U017: GetStudyGroups_WhenNoGroupsExist_ReturnsEmptyList
+
+Confirms that when no study groups exist, the controller returns an empty list rather than null or an error.
+
+# Component Tests
+## Test Class
+StudyGroupControllerTests
+Tests the StudyGroupController API endpoints and their integration with the repository layer.
+
+### Test Cases
+
+#### TC-C001: CreateStudyGroup_WithValidStudyGroup_CallRepositoryAndReturnOk
+
+Verifies that creating a valid StudyGroup calls the repository and returns HTTP 200 OK
+
+#### TC-C002: GetStudyGroups_WithValidStudyGroups_ReturnListOfStudyGroups
+
+Tests that the GetStudyGroups endpoint returns a list of StudyGroups with HTTP 200 OK
+
+#### TC-C003: SearchStudyGroups_WithValidGroups_ReturnMatchingGroups
+
+Validates that searching StudyGroups by subject returns filtered results
+
+#### TC-C004: JoinStudyGroup_WithValidGroup_CallRepositoryAndReturnOk
+
+Tests that joining a StudyGroup calls the repository method and returns HTTP 200 OK
+
+#### TC-C005: LeaveStudyGroup_WithValidGroupAndUser_CallRepositoryAndReturnOk
+
+Verifies that leaving a StudyGroup calls the repository method and returns HTTP 200 OK
+
+#### TC-C006: Constructor_WithNullRepository_ThrowsArgumentNullException
+
+Ensures the controller constructor properly validates its dependencies
+
+# E2E Tests
+
+### E2E Test 1: Full Study Group Lifecycle for a Single Subject
 
 #### Preconditions:
 
@@ -25,13 +133,12 @@
 
 #### Expected Results:
 
-* Group is created successfully with subject Math.
+* The group is created successfully with the subject Math.
 * Alice becomes a member.
 * Filtered and sorted views show the correct group.
 * After leaving, Alice is no longer listed as a member.
 
-### ✅ E2E Test 2: System Prevents Joining Two Study Groups of Same Subject
-#### Title: User attempts to join a second group for the same subject.
+### E2E Test 2: System Prevents Joining Two Study Groups of the Same Subject
 
 #### Preconditions:
 
@@ -50,8 +157,7 @@
 * "You are already in a study group for this subject (Physics)."
 * Bob remains in Physics Force only.
 
-### ✅ E2E Test 3: Multiple Users Across Different Subjects
-#### Title: Multiple users create and join groups across distinct subjects without conflicts.
+### E2E Test 3: Multiple Users Across Different Subjects
 
 #### Preconditions:
 
@@ -60,8 +166,8 @@
 
 #### Steps:
 
-* Carlos creates Chem Titans for subject Chemistry.
-* Dana creates Physics Pioneers for subject Physics.
+* Carlos creates Chem Titans for the subject of Chemistry.
+* Dana creates Physics Pioneers for the subject of Physics.
 * Carlos joins Chem Titans.
 * Dana joins Physics Pioneers.
 * Both view the full study group list.
@@ -75,8 +181,7 @@
 * Filtering and sorting work as expected.
 * No errors or cross-subject issues occur.
 
-### ✅ E2E Test 4: Group Creation Validation Errors
-#### Title: System prevents invalid group creation attempts.
+### E2E Test 4: Group Creation Validation Errors
 
 #### Preconditions:
 
