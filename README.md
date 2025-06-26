@@ -9,7 +9,9 @@
 3. [✅ Criteria Testing](#criteria-testing)  
 4. [🧪 Unit Tests](#unit-tests)  
 5. [🧩 Component Tests](#component-tests)  
-6. [🔁 End-to-End (E2E) Tests](#end-to-end-e2e-tests)  
+6. [🔁 End-to-End (E2E) Tests](#e2e-tests)
+7. [📊 Regression ](#regression) 
+8. [🗄️ SQL Query ](#sql-query)
 
 ---
 
@@ -260,3 +262,61 @@ Ensures the controller constructor properly validates its dependencies
 * Expected Results:
 * Error message appears: "Group name must be between 5–30 characters."
 * The form is not submitted.
+
+## Regression
+
+### EXCLUDED from Regression Suite
+
+- All Unit tests,
+- All component tests
+
+### So, INCLUDED tests are:
+
+- All e2e tests
+
+### Explanation:
+
+- I prefer to run Unit and Component tests every build, so they would be executed before each deployment. We don't need to rerun them in the scope of the regression
+
+## SQL Query
+
+**Note:** A little update to look for users with 'M' and 'm', because there can be some corrupted data in the DB
+
+Imagine that here is the DB scheme:
+
+### 🧑 Users
+
+| Column   | Data Type     | Description       |
+|----------|---------------|-------------------|
+| UserId   | INT           | Unique user ID    |
+| Name     | NVARCHAR(100) | User's full name  |
+
+---
+
+### 📚 StudyGroups
+Represents study groups that users can join.
+
+| Column       | Data Type     | Description              |
+|--------------|---------------|--------------------------|
+| StudyGroupId | INT           | Unique group ID          |
+| Name         | NVARCHAR(100) | Name of the study group  |
+
+---
+
+### 👥 StudyGroupUsers
+Associates users with study groups (many-to-many relationship).
+
+| Column             | Data Type | Description              |
+|--------------------|-----------|--------------------------|
+| StudyGroupsUsersId | INT       | Unique group ID          |
+| StudyGroupId 	     | INT       | Linked study group ID    |
+| UserId             | INT       | Linked user ID           |
+
+```sql
+SELECT DISTINCT sg.StudyGroupId, sg.Name
+FROM StudyGroups sg
+INNER JOIN StudyGroupUsers sgu ON sg.StudyGroupId = sgu.StudyGroupId
+INNER JOIN Users u ON sgu.UserId = u.UserId
+WHERE u.Name LIKE 'M%' OR u.Name LIKE 'm%'
+ORDER BY sg.StudyGroupId;
+```
