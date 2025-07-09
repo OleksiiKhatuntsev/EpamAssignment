@@ -99,13 +99,16 @@ public class StudyGroupComponentTests
         result.Should().BeOfType<OkResult>();
         _repositoryMock.Verify(r => r.LeaveStudyGroup(groupId, userId), Times.Once);
     }
-        
+
     [Test]
     [TestCaseForTestRail("006", TestCaseType.Component)]
     public void Constructor_WithNullRepository_ThrowsArgumentNullException()
     {
         Action act = () => new StudyGroupController(null);
-        act.Should().Throw<ArgumentNullException>();
+        act
+            .Should()
+            .Throw<ArgumentNullException>()
+            .WithParameterName("studyGroupRepository");
     }
 
     private static StudyGroup CreateValidStudyGroupWithUser(int groupId = 1, string groupName = "TestGroup",
